@@ -1,20 +1,20 @@
 const Project = ( name, category) => {
-    let projectName = name;
-    let projectCategory = category;
+    // let projectName = name;
+    // let projectCategory = category;
 
-    const getProject = () => projectName;
+    const getProject = () => name;
     
-    const getCategory = () => projectCategory;
+    const getCategory = () => category;
 
-    const setProject = ( name ) => { 
-        projectName = name
+    const setProject = ( newName ) => { 
+        name = newName
     };
 
-    const setCategory = ( category ) => {
-        return category = category
+    const setCategory = ( newCategory ) => {
+        category = newCategory
     };
 
-    return { getProject, getCategory, setProject, setCategory }
+    return { getProject, getCategory, setProject, setCategory };
 };
 
 
