@@ -1,19 +1,22 @@
 import './style.css'
 import { compareAsc, format } from 'date-fns'
-import { Project } from './projects/project.js'
+import { Project, data } from './projects/project.js'
 import { DOMStuff } from './DOMStuff.js'
 import { ToDo } from './to-do/to-do.js'
 
+let projectID = 0
+let toDoID = 0
 
-const project1 = Project('Trip to Europe', 'Travel');
+console.log(data)
 
-console.log("Project:", project1.getProject());
+data.project1 = Project('Trip to Mexico', 'Travel', projectID++ );
 
-project1.setProject('Trip to Asia')
+data.project1.setProject('Trip to Europe')
 
-console.log("Updated Project:", project1.getProject());
+data.project2 = Project('Find a Job', 'work', projectID++ )
 
-const toDo1 = ToDo('Pet a Dog', '10-17-1985', 'high')
+data.project1.createToDo()
 
-toDo1.toggleCompletedStatus()
-console.log("To Do:", toDo1.getTitle(), toDo1.getCompletedStatus());
+DOMStuff().renderProject()
+
+console.log(data.project1.getProjectID(), data.project2.getProjectID())

@@ -1,10 +1,11 @@
 const path = require('path');
 
 module.exports = {
+    mode: 'development',
     entry: './src/index.js',
     devtool: 'inline-source-map',
     devServer: {
-        static: './dist'
+        static: './dist',
     },
     output: {
         filename: 'main.js',
@@ -19,5 +20,6 @@ module.exports = {
                 use: ['style-loader', 'css-loader'],
             }
         ]
-    }
-}
+    },
+    stats: 'errors-only',
+};
