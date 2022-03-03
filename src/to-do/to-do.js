@@ -1,5 +1,5 @@
-const ToDo = ( title, dueDate, priority, isCompleted = false ) => {
-    //ID will be = to the number of toDo's 
+const ToDo = ( title, dueDate, priority, id, isCompleted = false ) => {
+    //ID will be = to the project ID + count of current todo's on that project 
     // Will need to pull in Project ID to tie them together
 
     const getTitle = () => title;
@@ -24,7 +24,14 @@ const ToDo = ( title, dueDate, priority, isCompleted = false ) => {
         priority = newPriority
     };
 
-    return { getTitle, setTitle, getDueDate, setDueDate, getCompletedStatus, toggleCompletedStatus, getPriority, setPriority };
+    const getToDoID = () => id
+
+    const deleteToDo = () => {
+        // use DOMStuff to for event to find 
+
+    }
+
+    return { getTitle, setTitle, getDueDate, setDueDate, getCompletedStatus, toggleCompletedStatus, getPriority, setPriority, getToDoID };
 }
 
 export { ToDo }

@@ -1,9 +1,14 @@
-import { data } from "./projects/project"
+import { Project } from "./projects/project"
+
+let currentProject 
 
 export const DOMStuff = () => {
 
+    const DOMData = Project().getData()
+
     const main = document.getElementById('main-wrapper');
     const projectWrapper = document.getElementById('project-list-wrapper')
+
 
     const _createDOMEl = (el, text, id, className, name) => {
         const newEl = document.createElement(el)
@@ -59,14 +64,54 @@ export const DOMStuff = () => {
     }; 
     */
 
-    const renderProject = () => {
-        for (const proj in data) {
-            const projectTitle = _createDOMEl('p', data[proj].getProjectName(), 'project-' + data[proj].getProjectID(), 'project' )
+    const renderProjectList = () => {
+        for (const proj in DOMData) {
+            const projectTitle = _createDOMEl('h3', DOMData[proj].getProjectName(), 'project' + DOMData[proj].getProjectID(), 'project' )
+
+            console.log(DOMData[proj].getProjectID())
+
+            if(projectWrapper.childNodes.length === 0) {
+                projectTitle.classList.add('current')
+            }
+
             projectWrapper.appendChild(projectTitle)
-            console.log(projectTitle, data[proj].getProjectID())
+            // console.log(projectTitle, DOMData[proj].getProjectID())
         }
+        setCurrentProject()
+    }
+
+
+    const setCurrentProject = () => {
+        currentProject = document.getElementsByClassName('current')
+        currentProject = currentProject[0]
+        // console.log(currentProject)
+    }
+    // const renderToDoList = (currentProject) => {
+    //     for (const toDo in data.currentProject.toDoData) {
+
+    //     }
+    // }
+
+    const renderToDoList = () => {
+        const currentProjectObject = DOMData[currentProject.id]
+        const currToDoList = currentProjectObject.getToDoData()
+
+        for (const toDoItem in currToDoList) {
+            console.log(toDoItem)
+            const todoDiv = _createDOMEl('div','', currToDoList[toDoItem].getToDoID(), 'to-do-item')
+            const title = _createDOMEl('p', currToDoList[toDoItem].getTitle(), 'to-do-' + currToDoList[toDoItem].getToDoID() +'-title', 'to-do-element')
+            const dueDate = _createDOMEl('p', currToDoList[toDoItem].getDueDate(), 'to-do-' + currToDoList[toDoItem].getTitle(), currToDoList[toDoItem].getToDoID() +'-dueDate', 'to-do-element')
+
+            todoDiv.appendChild(title)
+            todoDiv.appendChild(dueDate)
+            currentProject.appendChild(todoDiv)
+        }
+    }
+
+    const renderCurrProject = () => {
+
     }
     
 
-    return { main, renderProject }
+    return { main, currentProject, renderProjectList, renderToDoList}
 }
