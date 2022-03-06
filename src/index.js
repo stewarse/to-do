@@ -7,20 +7,27 @@ import { ToDo } from './to-do/to-do.js'
 let projectID = 0
 let toDoID = 0
 
-//window.onload = DOMStuff().renderProjectList()
+// window.addEventListener('load', (e) => {
+//     if(!getData().project0) getData().project0 = Project('Welcome', 'Travel', projectID++)
+
+//     //DOMStuff().renderCurrentProject(e)
+// })
+
+
+
 
 console.log(getData())
 
+getData().project0 = Project('Welcome', 'default', projectID++)
 
+getData().project1 = Project('Trip to Mexico', 'travel', projectID++ );
 
-getData().project0 = Project('Trip to Mexico', 'Travel', projectID++ );
+getData().project1.setProject('Trip to Europe')
 
-getData().project0.setProject('Trip to Europe')
+getData().project2 = Project('Find a Job', 'work', projectID++ )
 
-getData().project1 = Project('Find a Job', 'work', projectID++ )
-
-console.log(getData().project0.getProjectID())
 console.log(getData().project1.getProjectID())
+console.log(getData().project2.getProjectID())
 
 
 //data.project1.createToDo()
@@ -32,17 +39,25 @@ DOMStuff().renderProjectList();
 
 // console.log(getData().project1.getProjectID(), getData())//.project2.getProjectID())
 
-getData().project1.addToDo('Testing To-Do\'s', '10-2-22', 'low')
-getData().project1.addToDo('Another To-Do', '7-2-22', 'medium')
-getData().project0.addToDo('You\'re Mom goes to College', '8-2-22', 'medium')
+getData().project2.addToDo('Testing To-Do\'s', '10-2-22', 'low')
+getData().project2.addToDo('Another To-Do', '7-2-22', 'medium')
+getData().project1.addToDo('You\'re Mom goes to College', '8-2-22', 'medium')
+
+console.log(getData().project1.getToDoData())
+console.log(getData().project2.getToDoData())
 
 
-DOMStuff().renderToDoList();
+// DOMStuff().renderToDoList();
 
 
 // console.log(getData().project1.getToDoData().toDo0.getTitle())
-// console.log(getData().project1)
-// console.log(getData().project2.getProjectName())
+console.log(getData().project1)
+console.log(getData().project2.getProjectName())
 
-//getData().project1.getToDoData()
-//getData().project2.getToDoData()
+
+const projects = document.querySelectorAll('.project')
+projects.forEach((proj) => {
+    proj.addEventListener('click', DOMStuff().renderCurrentProject)
+})
+// getData().project1.getToDoData()
+// getData().project2.getToDoData()

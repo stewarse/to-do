@@ -1,13 +1,12 @@
-import { Project } from "./projects/project"
-
-let currentProject 
+import { Project, getData } from "./projects/project"
 
 export const DOMStuff = () => {
 
     const DOMData = Project().getData()
 
     const main = document.getElementById('main-wrapper');
-    const projectWrapper = document.getElementById('project-list-wrapper')
+    const projectListWrapper = document.getElementById('project-list-wrapper')
+    const currentProjectWrapper = document.getElementById('current-project-wrapper')
 
 
     const _createDOMEl = (el, text, id, className, name) => {
@@ -65,39 +64,71 @@ export const DOMStuff = () => {
     */
 
     const renderProjectList = () => {
+        console.log(DOMData)
         for (const proj in DOMData) {
             const projectTitle = _createDOMEl('h3', DOMData[proj].getProjectName(), 'project' + DOMData[proj].getProjectID(), 'project' )
 
             console.log(DOMData[proj].getProjectID())
 
-            if(projectWrapper.childNodes.length === 0) {
-                projectTitle.classList.add('current')
-            }
+            // if(projectListWrapper.childNodes.length === 0) {
+            //     projectTitle.classList.add('current')
+            // }
 
-            projectWrapper.appendChild(projectTitle)
+            projectListWrapper.appendChild(projectTitle)
             // console.log(projectTitle, DOMData[proj].getProjectID())
         }
-        setCurrentProject()
+        getCurrentProject()
     }
 
 
-    const setCurrentProject = () => {
-        currentProject = document.getElementsByClassName('current')
-        currentProject = currentProject[0]
-        // console.log(currentProject)
+    const getCurrentProject = () => {
+        return document.querySelector('.currentProject')
     }
-    // const renderToDoList = (currentProject) => {
-    //     for (const toDo in data.currentProject.toDoData) {
 
-    //     }
-    // }
+    const setCurrentProject = (e) => {
+        if(e.type === 'click'){
+            return _createDOMEl('div', e.target.textContent, e.target.id, `${e.target.classList}, current-project`)
+        } else if(e.type === 'load') {
+            console.log('I\'m working as expected!')
+            return _createDOMEl('div', getData().project0.textContent, 'project' + getData().project0.getProjectID(), 'current-project')
+        }
+    }
 
-    const renderToDoList = () => {
+
+
+    const renderCurrentProject = (e) => {
+        let currentProject = _createDOMEl('div', e.target.textContent, e.target.id, e.target.classList)
+
+
+        console.log(e.target)
+
+        // if(getCurrentProject()){
+        //     currentProject = getCurrentProject()
+        //     clearCurrentProject(currentProject)
+        //     currentProject = setCurrentProject(e)
+        // } else {
+        //     currentProject = projectListWrapper.firstChild
+        //     currentProject.classList.add('current-project')
+        // }
+
+        renderToDoList(currentProject)
+
+        //currentProjectDOM = _createDOMEl('div', currentProject.getProjectName(), 'currentProject', )
+
+        currentProjectWrapper.appendChild(currentProject)
+        
+    }
+
+    const renderToDoList = (currentProject) => {
         const currentProjectObject = DOMData[currentProject.id]
+        console.log (currentProjectObject.getProjectName(), DOMData.project0.getProjectName())
+        if (false) {
+            
+        }
+        console.log(currentProjectObject.getToDoData())
         const currToDoList = currentProjectObject.getToDoData()
 
         for (const toDoItem in currToDoList) {
-            console.log(toDoItem)
             const todoDiv = _createDOMEl('div','', currToDoList[toDoItem].getToDoID(), 'to-do-item')
             const title = _createDOMEl('p', currToDoList[toDoItem].getTitle(), 'to-do-' + currToDoList[toDoItem].getToDoID() +'-title', 'to-do-element')
             const dueDate = _createDOMEl('p', currToDoList[toDoItem].getDueDate(), 'to-do-' + currToDoList[toDoItem].getTitle(), currToDoList[toDoItem].getToDoID() +'-dueDate', 'to-do-element')
@@ -108,10 +139,15 @@ export const DOMStuff = () => {
         }
     }
 
-    const renderCurrProject = () => {
+    const clearCurrentProject = () => {
+        currentProject.ClassList.remove('currentProject')
 
+        while(currentProject.firstChild) {
+            currentProject.removeChild((currentProject.lastChild))
+        }
+        currentProjectWrapper.removeChild(currentProject)
     }
     
 
-    return { main, currentProject, renderProjectList, renderToDoList}
+    return { main, renderProjectList, renderToDoList, renderCurrentProject}
 }

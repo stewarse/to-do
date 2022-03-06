@@ -2,11 +2,11 @@ import { DOMStuff } from '../DOMStuff.js';
 import { ToDo } from '../to-do/to-do.js'
 
 const data = {
-    project1: {name: 'Welcome', projectToDoData: { 
-        todo1: {title: 'Get to know the system', dueDate: '3-10-2022'}, 
-        todo2: {title: 'Add a new Project', dueDate: '3-15-2022'}
-        }, category: 'default'
-    }
+    // project0: {name: 'Welcome', projectToDoData: { 
+    //     todo1: {title: 'Get to know the system', dueDate: '3-10-2022'}, 
+    //     todo2: {title: 'Add a new Project', dueDate: '3-15-2022'}
+    //     }, category: 'default'
+    // }
 }
 
 const Project = ( name, category, id ) => {
