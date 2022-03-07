@@ -2,3 +2,29 @@
   margin: 0;
   padding: 0;
 }
+
+main {
+  display: flex;
+  width: 100%;
+}
+
+#project-list-wrapper {
+  background-color: lightgray;
+  width: 25vw;
+  height: 90vh;
+  margin: 5% 0px 0px 0px;
+  justify-content: center;
+}
+
+h3 {
+  width: max-content;
+  margin: 1em 0px 1em 3em;
+}
+
+#current-project-wrapper {
+  background-color: lightcoral;
+  width: 75vw;
+  height: 90vh;
+  margin: 5% 0px 0px 0px;
+  justify-content: center;
+}

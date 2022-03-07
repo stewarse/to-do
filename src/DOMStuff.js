@@ -97,10 +97,9 @@ export const DOMStuff = () => {
 
 
     const renderCurrentProject = (e) => {
+        clearCurrentProject() 
+
         let currentProject = _createDOMEl('div', e.target.textContent, e.target.id, e.target.classList)
-
-
-        console.log(e.target)
 
         // if(getCurrentProject()){
         //     currentProject = getCurrentProject()
@@ -140,12 +139,20 @@ export const DOMStuff = () => {
     }
 
     const clearCurrentProject = () => {
-        currentProject.ClassList.remove('currentProject')
+        let projectToRemove = ''
 
-        while(currentProject.firstChild) {
-            currentProject.removeChild((currentProject.lastChild))
+        if (currentProjectWrapper.firstChild){
+            projectToRemove = currentProjectWrapper.firstChild
+
+
+            // Remove To-Do Nodes 
+            while(projectToRemove.firstChild) {
+                projectToRemove.removeChild((projectToRemove.lastChild))
+            }
+
+            // Remove Current Project
+            currentProjectWrapper.removeChild(projectToRemove)
         }
-        currentProjectWrapper.removeChild(currentProject)
     }
     
 
