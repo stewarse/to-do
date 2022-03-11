@@ -40,7 +40,7 @@ const Project = ( name, category, id ) => {
 
     const addToDo = (title, dueDate, priority) => {
         id = Object.keys(toDoData).length
-        toDoData['toDo' + id] = ToDo(title, dueDate, priority, id)
+        toDoData[id] = ToDo(title, dueDate, priority, id)
     }
 
     const getToDoData = () => toDoData;
