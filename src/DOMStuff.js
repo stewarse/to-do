@@ -64,7 +64,17 @@ export const DOMStuff = () => {
         return newEl
     }
 
+    const _clearFromDOM = (parent) => {
+        while(parent.firstChild) {
+            parent.removeChild(parent.lastChild)
+        }
+        if (!parent.classList.contains('core')) {
+            parent.remove()
+        }
+    }
+
     const renderProjectList = () => {
+        _clearFromDOM(projectListWrapper)
         for (const proj in domData) {
             const projectTitle = _createDomEl('h3', domData[proj].getProjectName(), 'project' + domData[proj].getProjectID(), ['project'] )
 
@@ -196,8 +206,8 @@ export const DOMStuff = () => {
     }
 
     const eventHandler = (e) => {
-        // take in user input for the new project
-        //const addProject = document.getElementById('add-project-form')
+
+        e.preventDefault()
 
         console.log(e)
         let parent = e.target.parentElement
@@ -208,13 +218,11 @@ export const DOMStuff = () => {
             const id = Object.keys(getData()).length
 
             getData()['project' + id] = Project(title.value, category.value, id )
+            _clearFromDOM(parent)
             renderProjectList()
             
         } else if (e.target.id === 'cancel-btn') {
-            while(parent.firstChild) {
-                parent.removeChild(parent.lastChild)
-            }
-            parent.remove()
+            _clearFromDOM(parent)
         }
         // use new project as current project?
 
