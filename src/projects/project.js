@@ -1,7 +1,7 @@
 import { DOMStuff } from '../DOMStuff.js';
 import { ToDo } from '../to-do/to-do.js'
 
-const data = {
+const _data = {
     // project0: {name: 'Welcome', projectToDoData: { 
     //     todo1: {title: 'Get to know the system', dueDate: '3-10-2022'}, 
     //     todo2: {title: 'Add a new Project', dueDate: '3-15-2022'}
@@ -45,10 +45,10 @@ const Project = ( name, category, id ) => {
 
     const getToDoData = () => toDoData;
 
-    return { getProjectName, getCategory, setProject, setCategory, getProjectID, addToDo, getData, getToDoData, toDoData /* ,renderProject */  };
+    return { getProjectName, getCategory, setProject, setCategory, getProjectID, addToDo, getToDoData, toDoData /* ,renderProject */  };
 };
 
-const getData = () => data
+const getData = () => _data
 
 
 

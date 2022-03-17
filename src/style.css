@@ -1,31 +1,36 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+header {
+  height: 10vh;
 }
 
 main {
   display: flex;
   width: 100%;
+  height: 100%;
 }
 
 #project-list-wrapper {
   background-color: lightgray;
   width: 300px;
   height: 90vh;
-  margin: 5% 0px 0px 0px;
   justify-content: center;
+  padding: 1em 1em 1em 3em;
 }
 
 h3 {
   width: max-content;
-  margin: 1em 0px 1em 3em;
+  padding: 0.5em 0;
 }
 
 #current-project-wrapper {
   background-color: lightcoral;
   flex-grow: 1;
   height: 90vh;
-  margin: 5% 0px 0px 0px;
   justify-content: center;
 }
 
@@ -43,6 +48,10 @@ h3 {
   margin: 0 3% 0 0;
 }
 
+.title {
+  width: 30em;
+}
+
 .checkbox {
   width: 14px;
   height: 14px;
@@ -50,4 +59,67 @@ h3 {
   border-radius: 50%;
   margin-right: 5px;
   align-self: center;
+}
+
+#add-new-project-container {
+  display: flex;
+  align-items: center;
+}
+
+#add-new-project {
+  padding-left: 0.5em;
+}
+
+#add-project-form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-350px, -100px);
+  display: flex;
+  /* padding: 3em; */
+  flex-direction: column;
+  width: 700px;
+  height: 200px;
+  margin: 0 auto;
+  background-color: white;
+  border: 2px solid black;
+}
+
+#add-project-form > * {
+  max-height: 50px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1em 3em;
+}
+
+.input,
+.label {
+  width: 40em;
+}
+
+.button {
+  max-width: 5em;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: medium;
+}
+
+#cancel-btn {
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  border: none;
+  background-color: white;
+}
+
+#add-project-btn {
+  position: absolute;
+  right: 2em;
+  bottom: 0.5em;
+}
+
+#add-project-form-title {
+  margin-left: 1em;
 }

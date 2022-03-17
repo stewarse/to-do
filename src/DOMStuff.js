@@ -1,35 +1,61 @@
 import id from "date-fns/locale/id";
-import { Project, getData } from "./projects/project"
+import { Project, getData } from './projects/project.js'
+import addIconOutline from './assets/add_circle_outline_black_24dp.svg'
 
 export const DOMStuff = () => {
 
-    const DOMData = Project().getData()
+    const domData = getData()
 
     const main = document.getElementById('main-wrapper');
     const projectListWrapper = document.getElementById('project-list-wrapper')
     const currentProjectWrapper = document.getElementById('current-project-wrapper')
 
 
-    const _createDOMEl = (el, text, id, className, attr) => {
+    const _createDomEl = (el, text, id, className, attr) => {
         const newEl = document.createElement(el)
 
-        if(el === 'label') {
-            newEl.setAttribute('for', attr)
-        } else if (el === 'input') {
-            newEl.setAttribute('name', attr)
-        } else if (el === 'select') {
-            newEl.setAttribute('name', attr)
+        switch (el) {
+            case 'label' :
 
-            const options = ['High', 'Medium', 'Low']
-            
-            options.forEach((el) => {
-                const setOption = document.createElement('option')
-                setOption.setAttribute('value', el.toLowerCase())
-                newEl.appendChild(setOption).text = el
-            })
-        } else if (el === 'button'){
-            newEl.setAttribute('role', attr)
+            case 'input' : 
+                newEl.setAttribute(attr[0], attr[1])
+                break;
+            case 'select' : 
+                newEl.setAttribute('name', attr)
+
+                const options = ['High', 'Medium', 'Low']
+                
+                options.forEach((el) => {
+                    const setOption = document.createElement('option')
+                    setOption.setAttribute('value', el.toLowerCase())
+                    newEl.appendChild(setOption).text = el
+                });
+                break;
+            case 'button' : 
+                newEl.setAttribute('role', attr);
+                break;
+            case 'img' : 
+                newEl.setAttribute('src', attr[1]);
+                break;
         }
+
+        // if(el === 'label') {
+        //     newEl.setAttribute('for', attr)
+        // } else if (el === 'input') {
+        //     newEl.setAttribute('name', attr)
+        // } else if (el === 'select') {
+        //     newEl.setAttribute('name', attr)
+
+        //     const options = ['High', 'Medium', 'Low']
+            
+        //     options.forEach((el) => {
+        //         const setOption = document.createElement('option')
+        //         setOption.setAttribute('value', el.toLowerCase())
+        //         newEl.appendChild(setOption).text = el
+        //     })
+        // } else if (el === 'button'){
+        //     newEl.setAttribute('role', attr)
+        // } else
 
         if (id) newEl.id = id
         if (className) newEl.classList.add(...className)
@@ -39,19 +65,26 @@ export const DOMStuff = () => {
     }
 
     const renderProjectList = () => {
-        console.log(DOMData)
-        for (const proj in DOMData) {
-            const projectTitle = _createDOMEl('h3', DOMData[proj].getProjectName(), 'project' + DOMData[proj].getProjectID(), ['project'] )
-
-            console.log(DOMData[proj].getProjectID())
-
-            // if(projectListWrapper.childNodes.length === 0) {
-            //     projectTitle.classList.add('current')
-            // }
+        for (const proj in domData) {
+            const projectTitle = _createDomEl('h3', domData[proj].getProjectName(), 'project' + domData[proj].getProjectID(), ['project'] )
 
             projectListWrapper.appendChild(projectTitle)
-            // console.log(projectTitle, DOMData[proj].getProjectID())
+
         }
+
+        const outlinedAddIcon = new Image();
+        outlinedAddIcon.src = addIconOutline
+
+        const addProjectBtn = _createDomEl('div', '', 'add-new-project-container', ['add-button-container'])
+        const addProjectText = _createDomEl('span', 'Add Project', 'add-new-project', ['add-button'])
+        const addProjectIcon = _createDomEl('img','', 'add-project-icon', ['add-button'], ['src', addIconOutline])
+
+        addProjectBtn.appendChild(addProjectIcon)
+        addProjectBtn.appendChild(addProjectText)
+
+        projectListWrapper.appendChild(addProjectBtn)
+        //projectListWrapper.appendChild(outlinedAddIcon)
+
         getCurrentProject()
     }
 
@@ -72,7 +105,7 @@ export const DOMStuff = () => {
     const _completeToDoItem = (e) => {
         const toDoId = _getID(e)
         const projectID = _getProjectId(e)
-        const toDoItem = DOMData[projectID].getToDoData()[toDoId]
+        const toDoItem = domData[projectID].getToDoData()[toDoId]
         
         toDoItem.toggleCompletedStatus()
 
@@ -90,8 +123,6 @@ export const DOMStuff = () => {
     const setToDoListeners = () => {
         const checkboxes = document.querySelectorAll('.checkbox')
 
-        //[ ]: Need to update code to change the completed state of the to-do item to be completed and then re-render the to lists
-        //[ ]: Update render to-do's to only render not completed items
         checkboxes.forEach((el) => {
             el.addEventListener('click', _completeToDoItem)
         })
@@ -100,16 +131,7 @@ export const DOMStuff = () => {
     const renderCurrentProject = (e) => {
         clearCurrentProject() 
 
-        let currentProject = _createDOMEl('ul', e.target.textContent, e.target.id, e.target.classList)
-
-        // if(getCurrentProject()){
-        //     currentProject = getCurrentProject()
-        //     clearCurrentProject(currentProject)
-        //     currentProject = setCurrentProject(e)
-        // } else {
-        //     currentProject = projectListWrapper.firstChild
-        //     currentProject.classList.add('current-project')
-        // }
+        let currentProject = _createDomEl('ul', e.target.textContent, e.target.id, e.target.classList)
 
         renderToDoList(currentProject)
         
@@ -118,8 +140,8 @@ export const DOMStuff = () => {
     }
 
     const renderToDoList = (currentProject) => {
-        const currentProjectObject = DOMData[currentProject.id]
-        console.log (currentProjectObject.getProjectName(), DOMData.project0.getProjectName())
+        const currentProjectObject = domData[currentProject.id]
+        console.log (currentProjectObject.getProjectName(), domData.project0.getProjectName())
         if (false) {
             
         }
@@ -131,13 +153,13 @@ export const DOMStuff = () => {
                 const toDoID = currToDoList[toDoItem].getToDoID();
                 console.log(toDoID)
 
-                const toDoListItem = _createDOMEl('li','', toDoID, ['to-do-item'])
+                const toDoListItem = _createDomEl('li','', toDoID, ['to-do-item'])
 
-                const completeBtn = _createDOMEl('button','', 'to-do-checkbox-' + toDoID , ['checkbox'] , 'checkbox')
+                const completeBtn = _createDomEl('button','', 'to-do-checkbox-' + toDoID , ['checkbox'] , 'checkbox')
 
-                const title = _createDOMEl('p', currToDoList[toDoItem].getTitle(), 'to-do-' + toDoID  + '-title', ['title', 'to-do-element'])
+                const title = _createDomEl('p', currToDoList[toDoItem].getTitle(), 'to-do-' + toDoID  + '-title', ['title', 'to-do-element'])
 
-                const dueDate = _createDOMEl('p', currToDoList[toDoItem].getDueDate(), 'to-do-' + toDoID + '-duedate', ['due-date', 'to-do-element'])
+                const dueDate = _createDomEl('p', currToDoList[toDoItem].getDueDate(), 'to-do-' + toDoID + '-duedate', ['due-date', 'to-do-element'])
 
                 toDoListItem.appendChild(completeBtn)
                 toDoListItem.appendChild(title)
@@ -163,19 +185,86 @@ export const DOMStuff = () => {
             currentProjectWrapper.removeChild(projectToRemove)
         }
     }
+
+    const addToDom = (parent, ...child) => {
+        child.forEach((el) => {
+            parent.appendChild(el)
+        })
+        // for ( let i = 0; i < child.length; i++) {
+        //     parent.appendChild(child)   
+        // } 
+    }
+
+    const eventHandler = (e) => {
+        // take in user input for the new project
+        //const addProject = document.getElementById('add-project-form')
+
+        console.log(e)
+        let parent = e.target.parentElement
+        
+        if(e.target.id === 'add-project-btn') {
+            const title = document.getElementById('title-input')
+            const category = document.getElementById('category-input')
+            const id = Object.keys(getData()).length
+
+            getData()['project' + id] = Project(title.value, category.value, id )
+            renderProjectList()
+            
+        } else if (e.target.id === 'cancel-btn') {
+            while(parent.firstChild) {
+                parent.removeChild(parent.lastChild)
+            }
+            parent.remove()
+        }
+        // use new project as current project?
+
+        // allow user to input to-do?
+
+    }
+
+    const displayNewProjectForm = () => {
+
+        const addProjectForm = _createDomEl('form', '', 'add-project-form', ['form'])
+
+        const formTitle =_createDomEl('h2', 'Add Project', 'add-project-form-title', ['form-title'])
+
+        const titleContainer = _createDomEl('div','', 'title-container', ['form-container', 'title'])
+        const titleInput = _createDomEl('input', '', 'title-input', ['project-title-input', 'input', 'title', 'form-element'], ['name', 'title-input'])
+        const titleLabel = _createDomEl('label', 'Project Title', 'title-label', ['project-title-label', 'label', 'title', 'form-element'], ['for', 'title-input'])
+
+        const categoryContainer = _createDomEl('div', '', 'category-container', ['form-container', 'category'])
+        const categoryInput = _createDomEl('input', '', 'category-input', ['project-category-input', 'input', 'form-element'], ['name', 'category-input'])
+        const categoryLabel = _createDomEl('label', 'Category','category-label', ['project-category-label', 'label', 'form-element'],['for', 'category-input'])
+
+        const addBtn = _createDomEl('button', 'Add Project', 'add-project-btn', ['button', 'form-element'])
+        const cancelBtn = _createDomEl('button', 'X', 'cancel-btn', ['button', 'form-element'])
+
+        addToDom(titleContainer, titleLabel, titleInput)
+
+        addToDom(categoryContainer, categoryLabel, categoryInput)
+
+        addToDom(addProjectForm, formTitle, titleContainer, categoryContainer, addBtn, cancelBtn)
+
+        addToDom( main, addProjectForm)
+
+        console.log(addProjectForm)
+        addProjectForm.addEventListener('click', eventHandler)
+    }
+
+
     
         /* const displayToDoForm = () => {
-         _createDOMEl = (el, text, id, className, name) 
-        const toDoForm = _createDOMEl('form', '', 'to-do-form')
+         _createDomEl = (el, text, id, className, name) 
+        const toDoForm = _createDomEl('form', '', 'to-do-form')
 
-        const titleInput = _createDOMEl('input', '', 'title-input', 'to-do-form-input', 'to-do-title')
-        const titleLabel = _createDOMEl('label', 'Title', 'title-label', 'to-do-form-label', 'to-do-title')
+        const titleInput = _createDomEl('input', '', 'title-input', 'to-do-form-input', 'to-do-title')
+        const titleLabel = _createDomEl('label', 'Title', 'title-label', 'to-do-form-label', 'to-do-title')
 
-        const dueDateInput = _createDOMEl('input','', 'due-date-input', 'test')
-        const dueDateLabel = _createDOMEl('label', 'Due Date', 'due-date-input', 'input-label', 'test')
+        const dueDateInput = _createDomEl('input','', 'due-date-input', 'test')
+        const dueDateLabel = _createDomEl('label', 'Due Date', 'due-date-input', 'input-label', 'test')
 
-        const priority = _createDOMEl('select', '', 'select-container', '', 'select-test')
-        const priorityLabel = _createDOMEl('label', 'Priority:','priority-label','to-do-form-label', 'select-test')
+        const priority = _createDomEl('select', '', 'select-container', '', 'select-test')
+        const priorityLabel = _createDomEl('label', 'Priority:','priority-label','to-do-form-label', 'select-test')
 
         toDoForm.appendChild(titleLabel)
         toDoForm.appendChild(titleInput)
@@ -192,5 +281,5 @@ export const DOMStuff = () => {
     }; 
     */
 
-    return { main, renderProjectList, renderToDoList, renderCurrentProject}
+    return { main, renderProjectList, renderToDoList, renderCurrentProject, displayNewProjectForm}
 }
