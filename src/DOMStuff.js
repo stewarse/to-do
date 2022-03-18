@@ -39,32 +39,14 @@ export const DOMStuff = () => {
                 break;
         }
 
-        // if(el === 'label') {
-        //     newEl.setAttribute('for', attr)
-        // } else if (el === 'input') {
-        //     newEl.setAttribute('name', attr)
-        // } else if (el === 'select') {
-        //     newEl.setAttribute('name', attr)
-
-        //     const options = ['High', 'Medium', 'Low']
-            
-        //     options.forEach((el) => {
-        //         const setOption = document.createElement('option')
-        //         setOption.setAttribute('value', el.toLowerCase())
-        //         newEl.appendChild(setOption).text = el
-        //     })
-        // } else if (el === 'button'){
-        //     newEl.setAttribute('role', attr)
-        // } else
-
+        if (text) newEl.textContent = text
         if (id) newEl.id = id
         if (className) newEl.classList.add(...className)
-        if (text) newEl.textContent = text
 
         return newEl
     }
 
-    const _clearFromDOM = (parent) => {
+    const clearFromDOM = (parent) => {
         while(parent.firstChild) {
             parent.removeChild(parent.lastChild)
         }
@@ -73,10 +55,17 @@ export const DOMStuff = () => {
         }
     }
 
+    const setProjectEventListeners = () => {
+        const projects = document.querySelectorAll('.project')
+        projects.forEach((proj) => {
+            proj.addEventListener('click', DOMStuff().renderCurrentProject)
+        })
+    }
+
     const renderProjectList = () => {
-        _clearFromDOM(projectListWrapper)
+        clearFromDOM(projectListWrapper)
         for (const proj in domData) {
-            const projectTitle = _createDomEl('h3', domData[proj].getProjectName(), 'project' + domData[proj].getProjectID(), ['project'] )
+            const projectTitle = _createDomEl('h3', domData[proj].getProjectName(), proj, ['project'] )
 
             projectListWrapper.appendChild(projectTitle)
 
@@ -95,6 +84,7 @@ export const DOMStuff = () => {
         projectListWrapper.appendChild(addProjectBtn)
         //projectListWrapper.appendChild(outlinedAddIcon)
 
+        setProjectEventListeners()
         getCurrentProject()
     }
 
@@ -141,7 +131,7 @@ export const DOMStuff = () => {
     const renderCurrentProject = (e) => {
         clearCurrentProject() 
 
-        let currentProject = _createDomEl('ul', e.target.textContent, e.target.id, e.target.classList)
+        let currentProject = _createDomEl('ul', e.target.textContent, e.target.id +'-current', e.target.classList)
 
         renderToDoList(currentProject)
         
@@ -150,7 +140,8 @@ export const DOMStuff = () => {
     }
 
     const renderToDoList = (currentProject) => {
-        const currentProjectObject = domData[currentProject.id]
+
+        const currentProjectObject = domData[currentProject.id.replace('-current', '')]
         console.log (currentProjectObject.getProjectName(), domData.project0.getProjectName())
         if (false) {
             
@@ -218,11 +209,11 @@ export const DOMStuff = () => {
             const id = Object.keys(getData()).length
 
             getData()['project' + id] = Project(title.value, category.value, id )
-            _clearFromDOM(parent)
+            clearFromDOM(parent)
             renderProjectList()
             
         } else if (e.target.id === 'cancel-btn') {
-            _clearFromDOM(parent)
+            clearFromDOM(parent)
         }
         // use new project as current project?
 
@@ -289,5 +280,5 @@ export const DOMStuff = () => {
     }; 
     */
 
-    return { main, renderProjectList, renderToDoList, renderCurrentProject, displayNewProjectForm}
+    return { main, renderProjectList, renderToDoList, renderCurrentProject, displayNewProjectForm, clearFromDOM}
 }

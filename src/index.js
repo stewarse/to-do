@@ -43,15 +43,7 @@ getData().project2.addToDo('A To-Do 11', '7-2-22', 'medium')
 getData().project2.addToDo('A To-Do 12', '7-2-22', 'medium')
 getData().project2.addToDo('A To-Do 13', '7-2-22', 'medium')
 
-
-
-// DOMStuff().renderToDoList();
-
-
-const projects = document.querySelectorAll('.project')
-projects.forEach((proj) => {
-    proj.addEventListener('click', DOMStuff().renderCurrentProject)
-})
+DOMStuff().renderProjectList()
 
 const addProject = document.getElementById('add-new-project-container')
 addProject.addEventListener('click', DOMStuff().displayNewProjectForm)
